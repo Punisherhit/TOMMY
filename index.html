@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Salome Kadzo · my heart speaks</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #1a0f12;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    main {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      min-height: 100vh;
+      background: inherit;
+      box-shadow: 0 0 30px rgba(0,0,0,0.2);
+    }
+
+    .page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 100vh;
+      padding: 2rem 1.5rem 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, transform 0.5s ease;
+      opacity: 1;
+      z-index: 10;
+      overflow-y: auto;
+    }
+
+    .page.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+      z-index: 1;
+    }
+
+    /* start screen */
+    .start-screen {
+      background: radial-gradient(circle at 30% 30%, #ffd9e6, #fba6b9);
+      color: #4a1e2b;
+      text-align: center;
+      justify-content: space-around;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-shadow: 2px 2px 8px rgba(255, 240, 245, 0.8);
+      margin-bottom: 1rem;
+    }
+
+    .sub {
+      font-size: 1.1rem;
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+      font-style: italic;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(4px);
+      padding: 0.7rem 1.5rem;
+      border-radius: 40px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 2rem 0 3rem;
+    }
+
+    .btn {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      padding: 1rem 2.5rem;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+      letter-spacing: 1px;
+      background: white;
+      color: #b3415c;
+    }
+
+    .btn-yes {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 0 15px #ffb3c6;
+    }
+
+    .btn-no {
+      background: #2d1a1f;
+      color: #f2b4c2;
+      position: relative;
+    }
+
+    #cryingHeart {
+      font-size: 2.5rem;
+      margin-top: 1rem;
+      filter: drop-shadow(0 0 6px hotpink);
+      transition: opacity 0.3s;
+    }
+
+    .sad-message {
+      background: rgba(70, 30, 40, 0.8);
+      color: #ffc2d1;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    /* HEARTBREAK PAGE (dark romantic, improved readability) */
+    .heartbreak-page {
+      background: linear-gradient(145deg, #2c1a23 0%, #3d2532 100%);
+      color: #f2d9e6;
+    }
+
+    .hb-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #e6b8cc;
+      border-bottom: 2px dashed #b8819c;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .content-card {
+      background: rgba(25, 12, 18, 0.8);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      padding: 1.8rem 1.5rem;
+      width: 100%;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 1px solid #a75c7a;
+      box-shadow: 0 20px 30px -10px black;
+    }
+
+    .rotating-text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      font-weight: 300;
+      text-align: center;
+      transition: opacity 0.5s ease-in;
+      opacity: 1;
+      white-space: pre-line;
+      color: #fff0f5;
+      text-shadow: 0 1px 2px black;
+    }
+
+    .rotating-text.fade-out {
+      opacity: 0.3;
+    }
+
+    .btn-small {
+      background: transparent;
+      border: 1.5px solid #dba5b9;
+      color: #fad5e5;
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      margin: 0.3rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-small:hover {
+      background: #b35f7c;
+      color: black;
+    }
+
+    /* love page button overrides – ensure text is dark & visible */
+    .love-page .btn-small {
+      color: #4a1e2b;               /* deep rose for contrast */
+      border-color: #a03e5a;
+      background: rgba(255, 220, 235, 0.7); /* soft pinkish bg */
+    }
+    .love-page .btn-small:hover {
+      background: #f9b8d0;
+      color: #2c0f1a;
+    }
+
+    .mode-switch {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      margin: 1.5rem 0 1rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      margin: 1.2rem 0 1rem;
+      flex-wrap: wrap;
+    }
+
+    .song-link, .home-link {
+      background: #721b3b;
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin: 0.5rem 0;
+      border: 1px solid #f5a3c7;
+    }
+
+    .home-link {
+      background: #3d2b33;
+      border-color: #b88ca5;
+      margin-left: 0.5rem;
+    }
+
+    /* LOVE PAGE (soft but high contrast) */
+    .love-page {
+      background: radial-gradient(circle at top, #ffe4ec, #fec8d8);
+      color: #3a1e2b;
+    }
+
+    .love-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #9e2b4f;
+      text-shadow: 0 0 10px #ffb6c1;
+    }
+
+    .love-page .content-card {
+      background: rgba(255, 240, 245, 0.9);
+      border: 2px solid #ffa5b9;
+      color: #2c0f1a;
+    }
+
+    .love-page .rotating-text {
+      color: #2c0f1a;
+      font-weight: 500;
+      text-shadow: none;
+    }
+
+    /* animations */
+    .rain-container, .broken-hearts, .floating-hearts, .kisses {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heartbreak-page .rain-container span,
+    .heartbreak-page .broken-hearts span {
+      position: absolute;
+      color: #b8739f;
+      font-size: 1.2rem;
+      animation: rainFall linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes rainFall {
+      0% { transform: translateY(-20vh) translateX(0); opacity: 0.8; }
+      100% { transform: translateY(120vh) translateX(20px); opacity: 0; }
+    }
+
+    .broken-hearts span {
+      font-size: 1.8rem;
+      animation: floatBroken 8s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatBroken {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(30px, -40px) rotate(20deg); }
+    }
+
+    .love-page .floating-hearts span {
+      position: absolute;
+      color: #ff95a8;
+      font-size: 2rem;
+      animation: floatLove 6s infinite alternate ease-in-out;
+      filter: drop-shadow(0 0 6px #ffc0cb);
+    }
+
+    @keyframes floatLove {
+      0% { transform: translateY(0) scale(1); opacity: 0.6; }
+      100% { transform: translateY(-80px) scale(1.3); opacity: 1; }
+    }
+
+    .kisses span {
+      position: absolute;
+      font-size: 1.8rem;
+      animation: kiss 4s infinite;
+    }
+
+    @keyframes kiss {
+      0% { transform: translate(0,0) rotate(0); opacity: 0; }
+      50% { opacity: 1; transform: translate(40px, -40px) rotate(15deg); }
+      100% { transform: translate(80px, -80px) rotate(30deg); opacity: 0; }
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: inherit;
+      opacity: 0.8;
+      font-weight: 300;
+      letter-spacing: 1px;
+      z-index: 30;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 400px) {
+      h1 { font-size: 1.9rem; }
+      .btn { font-size: 1.2rem; padding: 0.8rem 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <!-- START SCREEN -->
+  <div class="page start-screen" id="startScreen">
+    <h1>SALOME KADZO,<br>will you be my Valentine?</h1>
+    <div class="sub">“This message comes from the deepest part of my heart.”</div>
+    <div class="btn-group">
+      <button class="btn btn-yes" id="yesBtn">YES ❤️</button>
+      <button class="btn btn-no" id="noBtn">NO 💔</button>
+    </div>
+    <div id="cryingHeart"></div>
+    <div id="sadMessage" class="sad-message"></div>
+    <div class="footer">Designed by ANTHONY DERC</div>
+  </div>
+
+  <!-- HEARTBREAK PAGE -->
+  <div class="page heartbreak-page hidden" id="heartbreakPage">
+    <div class="rain-container" id="rainContainer"></div>
+    <div class="broken-hearts" id="brokenHearts"></div>
+    <h2 class="hb-title">silence without you</h2>
+    <div class="mode-switch">
+      <button class="btn-small" id="hbPoemsBtn">💔 Heartbreak Poems</button>
+      <button class="btn-small" id="hbMessagesBtn">💔 Heartbreak Messages</button>
+    </div>
+    <div class="content-card">
+      <div id="hbDisplay" class="rotating-text">loading...</div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn-small" id="hbPrev">◀ Back</button>
+      <button class="btn-small" id="hbPauseBtn">⏸️ Pause</button>
+      <button class="btn-small" id="hbNext">Next ▶</button>
+    </div>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+      <a href="#" class="song-link" id="hbSong" target="_blank">Play Song (heartbreak)</a>
+      <button class="home-link" id="hbHomeBtn">🏠 Back to Home</button>
+    </div>
+    <div class="footer" style="color:#d1a3b5;">Designed by ANTHONY DERC</div>
+  </div>
+
+  <!-- LOVE PROPOSAL PAGE -->
+  <div class="page love-page hidden" id="lovePage">
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="kisses" id="kissesContainer"></div>
+    <h2 class="love-title">SALOME KADZO, this is my heart speaking…</h2>
+    <div class="mode-switch">
+      <button class="btn-small" id="lovePoemsBtn">🌸 Love Poems</button>
+      <button class="btn-small" id="loveMessagesBtn">💌 Love Messages</button>
+    </div>
+    <div class="content-card">
+      <div id="loveDisplay" class="rotating-text">loading...</div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn-small" id="lovePrev">◀ Back</button>
+      <button class="btn-small" id="lovePauseBtn">⏸️ Pause</button>
+      <button class="btn-small" id="loveNext">Next ▶</button>
+    </div>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+      <a href="#" class="song-link" id="loveSong" target="_blank">Play Song (love)</a>
+      <button class="home-link" id="loveHomeBtn">🏠 Back to Home</button>
+    </div>
+    <div class="footer">Designed by ANTHONY DERC</div>
+  </div>
+</main>
+
+<script>
+  (function() {
+    // ----- POEMS & MESSAGES (original, long, with Salome Kadzo) -----
+    const heartbreakPoems = [
+      `Salome Kadzo, the night holds your name like a secret it won't release.\nI count the hours since your laughter left this room —\nthey are heavier than all the winters before.\nI reach for your hand in dreams, and wake to empty sheets.\nMy chest, a hollow drum that only echoes "Salome".\nThe rain tastes of conversations we'll never have.\nIf grief had a colour, it would be the rose you loved —\nnow wilted, its petals a language I can't read.`,
+
+      `Kadzo, I didn't know that loving you could become\na museum of almosts. I walk through halls of memories:\nyour scent, your silent gaze, the way you'd say my name.\nNow the wind rehearses your goodbye.\nI write letters to you on fogged glass, Salome,\nhoping the sun will delay its rising.\nBut dawn always comes, and with it the ache\nof a future that dissolved before it could begin.`,
+
+      `Salome, what is heartbreak but a room with your silhouette\nstill painted on the walls? I talk to you in my head,\ncompose verses you'll never read. Your name, Kadzo,\nhas become a prayer I whisper into the dark.\nI wear the ring of your absence around my soul.\nThere is no remedy; only the soft rain of remembering\nhow you'd tilt your head when listening.\nI am a man holding a dead rose, asking the wind why.`
+    ];
+
+    const heartbreakMessages = [
+      `Salome Kadzo, I never imagined the space where you used to be could feel so vast. I still see you in crowded rooms — a flash of your smile, the way you'd tuck your hair. My heart keeps drafting messages I can't send. I wanted to be your safe harbour, but instead I'm a shipwreck dreaming of your lighthouse. I'm not asking for you back; I'm just whispering into the void, letting you know that some loves don't fade — they just learn to ache quietly.`,
+
+      `I thought I understood loneliness until you left, Salome. Now I know it's the sound of your name stuck in my throat. Every song, every street corner, every dusk reminds me of what we built and what I lost. You were the poem I was too afraid to finish, and now the ink has dried. But if you ever wonder if you were loved deeply — yes, Salome Kadzo, you were loved to the point of breaking.`,
+
+      `There are people who leave footprints in your soul. Salome Kadzo, you left an ocean. I try to convince myself that time heals, but it only teaches me to carry you differently. You are the question I'll never stop asking: what if? I hope you're happy, even if the happiness doesn't include me. My heart still beats your rhythm. It always will.`
+    ];
+
+    const lovePoems = [
+      `Salome Kadzo, your name is a psalm I sing before sleep.\nI have traced the constellation of your freckles\nwith my thoughts until they became my sky.\nYou are the reason dawn feels like a gift.\nI want to grow old with you, Salome,\nour memories tangled like roots of ancient trees.\nWith you, I am not afraid of the dark —\nyou are the light I've been searching for\nin every lifetime. Be my Valentine, yes,\nbut also my tomorrow, my always, my home.`,
+
+      `Kadzo, if I could write our love in the language of flowers,\nI'd fill every garden with the roses you deserve.\nYour laughter spills like honey over my doubts.\nI see our future in the quiet moments:\nrainy afternoons, coffee for two, your head on my chest.\nSalome, you are not just a chapter —\nyou are the whole library I want to live in.\nLet me be the one who holds your hand\nwhen the world feels heavy. Let me be your Valentine\nand more: your partner, your peace, your love.`,
+
+      `Salome Kadzo, my heart speaks only one dialect — yours.\nEvery beat forms your name: Salome, Salome.\nI dream of walking beside you through seasons,\nyour hand in mine, our steps synced like verses.\nYou are the poetry I no longer need to write,\nbecause you live it. I choose you today,\ntomorrow, and in all the versions of forever.\nBe my Valentine, and let's build a love story\nthat makes the stars jealous.`
+    ];
+
+    const loveMessages = [
+      `Salome Kadzo, this is my heart speaking without a filter: I adore you. Not just the idea of you, but your quiet mornings, your stubbornness, your kindness. I see a life where we cook together, argue about silly things, and make up under the same blanket. I want to be the reason you smile after a hard day. I want to walk through every season with you, holding your hand. So here it is: will you be my Valentine? And if you let me, I'll spend the rest of my life showing you what you mean to me.`,
+
+      `There are people you meet and instantly know — they matter. Salome, from the moment we connected, something shifted in my universe. You are thoughtful, radiant, and deeply real. I don't want to just date you; I want to build with you. I want to be your safe place, your loudest cheerleader, your partner in everything. I choose you, Salome Kadzo. I choose your laughter, your dreams, your flaws, your magic. Be my Valentine, and let's begin forever.`,
+
+      `I've written and deleted this message a hundred times because words feel too small. But here goes: Salome Kadzo, you are the woman I've been quietly praying for. Your presence makes everything softer, brighter. I want to be the one who brings you coffee in bed, who listens to your stories, who holds you when you cry. I'm not asking for just one day — I'm asking for a lifetime of Valentine's Days. Say yes, and I'll dedicate my life to making you feel loved.`
+    ];
+
+    // ----- state -----
+    let noClickCount = 0;
+    let hbMode = 'poems';
+    let hbIndex = 0;
+    let loveMode = 'poems';
+    let loveIndex = 0;
+    let hbInterval = null;
+    let loveInterval = null;
+    let hbPaused = false;
+    let lovePaused = false;
+
+    // DOM elements
+    const startScreen = document.getElementById('startScreen');
+    const heartbreakPage = document.getElementById('heartbreakPage');
+    const lovePage = document.getElementById('lovePage');
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const cryingHeartDiv = document.getElementById('cryingHeart');
+    const sadMsgDiv = document.getElementById('sadMessage');
+    const hbDisplay = document.getElementById('hbDisplay');
+    const loveDisplay = document.getElementById('loveDisplay');
+    const hbPoemsBtn = document.getElementById('hbPoemsBtn');
+    const hbMessagesBtn = document.getElementById('hbMessagesBtn');
+    const hbPrev = document.getElementById('hbPrev');
+    const hbNext = document.getElementById('hbNext');
+    const hbPauseBtn = document.getElementById('hbPauseBtn');
+    const lovePoemsBtn = document.getElementById('lovePoemsBtn');
+    const loveMessagesBtn = document.getElementById('loveMessagesBtn');
+    const lovePrev = document.getElementById('lovePrev');
+    const loveNext = document.getElementById('loveNext');
+    const lovePauseBtn = document.getElementById('lovePauseBtn');
+    const hbSong = document.getElementById('hbSong');
+    const loveSong = document.getElementById('loveSong');
+    const hbHomeBtn = document.getElementById('hbHomeBtn');
+    const loveHomeBtn = document.getElementById('loveHomeBtn');
+
+    // set song links
+    hbSong.href = 'https://youtu.be/3JWTaaS7LdU?list=RD3JWTaaS7LdU';
+    loveSong.href = 'https://youtu.be/asZm5gHknmU?list=RDasZm5gHknmU';
+
+    // ----- background animations -----
+    function createRainAndBroken() {
+      const rain = document.getElementById('rainContainer');
+      const broken = document.getElementById('brokenHearts');
+      for (let i=0; i<16; i++) {
+        let drop = document.createElement('span');
+        drop.innerHTML = '💧';
+        drop.style.left = Math.random() * 100 + '%';
+        drop.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        drop.style.animationDelay = (Math.random() * 5) + 's';
+        rain.appendChild(drop);
+      }
+      for (let i=0; i<8; i++) {
+        let b = document.createElement('span');
+        b.innerHTML = '💔';
+        b.style.left = Math.random() * 100 + '%';
+        b.style.top = Math.random() * 80 + '%';
+        b.style.animationDuration = (Math.random() * 6 + 4) + 's';
+        b.style.animationDelay = (Math.random() * 2) + 's';
+        broken.appendChild(b);
+      }
+    }
+    function createFloatingHeartsAndKisses() {
+      const hearts = document.getElementById('floatingHearts');
+      const kisses = document.getElementById('kissesContainer');
+      for (let i=0; i<12; i++) {
+        let h = document.createElement('span');
+        h.innerHTML = '❤️';
+        h.style.left = Math.random() * 100 + '%';
+        h.style.animationDuration = (Math.random() * 5 + 4) + 's';
+        h.style.animationDelay = (Math.random() * 3) + 's';
+        hearts.appendChild(h);
+      }
+      for (let i=0; i<8; i++) {
+        let k = document.createElement('span');
+        k.innerHTML = '💋';
+        k.style.left = Math.random() * 100 + '%';
+        k.style.top = Math.random() * 100 + '%';
+        k.style.animation = `kiss ${Math.random()*4+4}s infinite`;
+        k.style.animationDelay = (Math.random()*4)+'s';
+        kisses.appendChild(k);
+      }
+    }
+    createRainAndBroken();
+    createFloatingHeartsAndKisses();
+
+    // ----- helper: show text with fade -----
+    function setHbText(text, skipFade = false) {
+      if (skipFade) {
+        hbDisplay.innerText = text;
+        return;
+      }
+      hbDisplay.classList.add('fade-out');
+      setTimeout(() => {
+        hbDisplay.innerText = text;
+        hbDisplay.classList.remove('fade-out');
+      }, 150);
+    }
+    function setLoveText(text, skipFade = false) {
+      if (skipFade) {
+        loveDisplay.innerText = text;
+        return;
+      }
+      loveDisplay.classList.add('fade-out');
+      setTimeout(() => {
+        loveDisplay.innerText = text;
+        loveDisplay.classList.remove('fade-out');
+      }, 150);
+    }
+
+    // ----- heartbreak rotation (1 minute = 60000 ms) -----
+    function startHbRotation() {
+      if (hbInterval) clearInterval(hbInterval);
+      if (hbPaused) return;
+      hbInterval = setInterval(() => {
+        if (hbMode === 'poems') {
+          hbIndex = (hbIndex + 1) % heartbreakPoems.length;
+          setHbText(heartbreakPoems[hbIndex]);
+        } else {
+          hbIndex = (hbIndex + 1) % heartbreakMessages.length;
+          setHbText(heartbreakMessages[hbIndex]);
+        }
+      }, 60000);
+    }
+
+    function stopHbRotation() {
+      if (hbInterval) {
+        clearInterval(hbInterval);
+        hbInterval = null;
+      }
+    }
+
+    function updateHbDisplay() {
+      if (hbMode === 'poems') setHbText(heartbreakPoems[hbIndex], true);
+      else setHbText(heartbreakMessages[hbIndex], true);
+    }
+
+    // ----- love rotation (1 minute) -----
+    function startLoveRotation() {
+      if (loveInterval) clearInterval(loveInterval);
+      if (lovePaused) return;
+      loveInterval = setInterval(() => {
+        if (loveMode === 'poems') {
+          loveIndex = (loveIndex + 1) % lovePoems.length;
+          setLoveText(lovePoems[loveIndex]);
+        } else {
+          loveIndex = (loveIndex + 1) % loveMessages.length;
+          setLoveText(loveMessages[loveIndex]);
+        }
+      }, 60000);
+    }
+
+    function stopLoveRotation() {
+      if (loveInterval) {
+        clearInterval(loveInterval);
+        loveInterval = null;
+      }
+    }
+
+    function updateLoveDisplay() {
+      if (loveMode === 'poems') setLoveText(lovePoems[loveIndex], true);
+      else setLoveText(loveMessages[loveIndex], true);
+    }
+
+    // ----- pause toggles -----
+    hbPauseBtn.addEventListener('click', () => {
+      if (!hbPaused) {
+        hbPaused = true;
+        stopHbRotation();
+        hbPauseBtn.innerHTML = '▶️ Resume';
+      } else {
+        hbPaused = false;
+        startHbRotation();
+        hbPauseBtn.innerHTML = '⏸️ Pause';
+      }
+    });
+
+    lovePauseBtn.addEventListener('click', () => {
+      if (!lovePaused) {
+        lovePaused = true;
+        stopLoveRotation();
+        lovePauseBtn.innerHTML = '▶️ Resume';
+      } else {
+        lovePaused = false;
+        startLoveRotation();
+        lovePauseBtn.innerHTML = '⏸️ Pause';
+      }
+    });
+
+    // ----- NO button dodge -----
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (noClickCount < 2) {
+        noClickCount++;
+        const x = Math.random() * 70 + 5;
+        const y = Math.random() * 70 + 10;
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = x + '%';
+        noBtn.style.top = y + '%';
+        const sadMessages = ["Please don’t break my heart…", "Are you sure, Salome?", "My heart can’t take this…"];
+        sadMsgDiv.innerText = sadMessages[noClickCount-1] + " 💔";
+        cryingHeartDiv.innerHTML = '😢💔'.repeat(noClickCount);
+      } else if (noClickCount === 2) {
+        noClickCount++;
+        goToHeartbreak();
+      }
+    });
+
+    // YES button
+    yesBtn.addEventListener('click', () => {
+      goToLove();
+    });
+
+    // home buttons
+    function goHome() {
+      stopHbRotation();
+      stopLoveRotation();
+      noClickCount = 0;
+      noBtn.style.position = 'relative';
+      noBtn.style.left = '';
+      noBtn.style.top = '';
+      cryingHeartDiv.innerHTML = '';
+      sadMsgDiv.innerText = '';
+      hbPaused = false; lovePaused = false;
+      hbPauseBtn.innerHTML = '⏸️ Pause';
+      lovePauseBtn.innerHTML = '⏸️ Pause';
+      heartbreakPage.classList.add('hidden');
+      lovePage.classList.add('hidden');
+      startScreen.classList.remove('hidden');
+    }
+
+    hbHomeBtn.addEventListener('click', goHome);
+    loveHomeBtn.addEventListener('click', goHome);
+
+    function goToHeartbreak() {
+      startScreen.classList.add('hidden');
+      heartbreakPage.classList.remove('hidden');
+      hbMode = 'poems';
+      hbIndex = 0;
+      hbPaused = false; hbPauseBtn.innerHTML = '⏸️ Pause';
+      updateHbDisplay();
+      startHbRotation();
+    }
+
+    function goToLove() {
+      startScreen.classList.add('hidden');
+      lovePage.classList.remove('hidden');
+      loveMode = 'poems';
+      loveIndex = 0;
+      lovePaused = false; lovePauseBtn.innerHTML = '⏸️ Pause';
+      updateLoveDisplay();
+      startLoveRotation();
+    }
+
+    // ----- heartbreak mode switches -----
+    hbPoemsBtn.addEventListener('click', () => {
+      hbMode = 'poems';
+      hbIndex = 0;
+      updateHbDisplay();
+      stopHbRotation(); if (!hbPaused) startHbRotation();
+    });
+    hbMessagesBtn.addEventListener('click', () => {
+      hbMode = 'messages';
+      hbIndex = 0;
+      updateHbDisplay();
+      stopHbRotation(); if (!hbPaused) startHbRotation();
+    });
+    hbPrev.addEventListener('click', () => {
+      if (hbMode === 'poems') {
+        hbIndex = (hbIndex - 1 + heartbreakPoems.length) % heartbreakPoems.length;
+        setHbText(heartbreakPoems[hbIndex], true);
+      } else {
+        hbIndex = (hbIndex - 1 + heartbreakMessages.length) % heartbreakMessages.length;
+        setHbText(heartbreakMessages[hbIndex], true);
+      }
+      stopHbRotation(); if (!hbPaused) startHbRotation();
+    });
+    hbNext.addEventListener('click', () => {
+      if (hbMode === 'poems') {
+        hbIndex = (hbIndex + 1) % heartbreakPoems.length;
+        setHbText(heartbreakPoems[hbIndex], true);
+      } else {
+        hbIndex = (hbIndex + 1) % heartbreakMessages.length;
+        setHbText(heartbreakMessages[hbIndex], true);
+      }
+      stopHbRotation(); if (!hbPaused) startHbRotation();
+    });
+
+    // ----- love mode switches -----
+    lovePoemsBtn.addEventListener('click', () => {
+      loveMode = 'poems';
+      loveIndex = 0;
+      updateLoveDisplay();
+      stopLoveRotation(); if (!lovePaused) startLoveRotation();
+    });
+    loveMessagesBtn.addEventListener('click', () => {
+      loveMode = 'messages';
+      loveIndex = 0;
+      updateLoveDisplay();
+      stopLoveRotation(); if (!lovePaused) startLoveRotation();
+    });
+    lovePrev.addEventListener('click', () => {
+      if (loveMode === 'poems') {
+        loveIndex = (loveIndex - 1 + lovePoems.length) % lovePoems.length;
+        setLoveText(lovePoems[loveIndex], true);
+      } else {
+        loveIndex = (loveIndex - 1 + loveMessages.length) % loveMessages.length;
+        setLoveText(loveMessages[loveIndex], true);
+      }
+      stopLoveRotation(); if (!lovePaused) startLoveRotation();
+    });
+    loveNext.addEventListener('click', () => {
+      if (loveMode === 'poems') {
+        loveIndex = (loveIndex + 1) % lovePoems.length;
+        setLoveText(lovePoems[loveIndex], true);
+      } else {
+        loveIndex = (loveIndex + 1) % loveMessages.length;
+        setLoveText(loveMessages[loveIndex], true);
+      }
+      stopLoveRotation(); if (!lovePaused) startLoveRotation();
+    });
+
+    // initial display (will be set when page becomes visible)
+    hbDisplay.innerText = heartbreakPoems[0];
+    loveDisplay.innerText = lovePoems[0];
+  })();
+</script>
+</body>
+</html>
